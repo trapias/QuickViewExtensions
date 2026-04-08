@@ -1,0 +1,52 @@
+name: QuickViewExtensions
+options:
+  bundleIdPrefix: com.albertopasca
+  deploymentTarget:
+    macOS: "15.0"
+  xcodeVersion: "16.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5"
+    MACOSX_DEPLOYMENT_TARGET: "15.0"
+
+packages:
+  swift-markdown:
+    url: https://github.com/swiftlang/swift-markdown
+    from: "0.5.0"
+
+targets:
+  QuickViewExtensions:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions
+        PRODUCT_NAME: QuickViewExtensions
+        INFOPLIST_FILE: App/Info.plist
+        CODE_SIGN_ENTITLEMENTS: App/QuickViewExtensions.entitlements
+        ENABLE_APP_SANDBOX: true
+    dependencies:
+      - target: easyMDView
+        embed: true
+
+  easyMDView:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Extensions/easyMDView
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyMDView
+        PRODUCT_NAME: easyMDView
+        INFOPLIST_FILE: Extensions/easyMDView/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/easyMDView/easyMDView.entitlements
+        ENABLE_APP_SANDBOX: true
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+    dependencies:
+      - package: swift-markdown
+        product: Markdown
