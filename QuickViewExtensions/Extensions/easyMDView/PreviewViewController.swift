@@ -1,59 +1,118 @@
 import Cocoa
 import Quartz
-import WebKit
 
 class PreviewViewController: NSViewController, QLPreviewingController {
 
-    private var webView: WKWebView!
+    private var scrollView: NSScrollView!
+    private var textView: NSTextView!
 
     override func loadView() {
-        let config = WKWebViewConfiguration()
-        config.preferences.setValue(false, forKey: "javaScriptCanOpenWindowsAutomatically")
+        // Container
+        let container = NSView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        container.autoresizingMask = [.width, .height]
 
-        webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 400), configuration: config)
-        webView.navigationDelegate = self
-        self.view = webView
+        // Scroll view
+        scrollView = NSScrollView(frame: container.bounds)
+        scrollView.autoresizingMask = [.width, .height]
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.drawsBackground = true
+        container.addSubview(scrollView)
+
+        // Text view
+        let contentSize = scrollView.contentSize
+        let textContainer = NSTextContainer(containerSize: NSSize(
+            width: contentSize.width,
+            height: .greatestFiniteMagnitude
+        ))
+        textContainer.widthTracksTextView = true
+
+        let layoutManager = NSLayoutManager()
+        layoutManager.addTextContainer(textContainer)
+
+        let textStorage = NSTextStorage()
+        textStorage.addLayoutManager(layoutManager)
+
+        textView = NSTextView(frame: NSRect(origin: .zero, size: contentSize), textContainer: textContainer)
+        textView.minSize = NSSize(width: 0, height: 0)
+        textView.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+        textView.isVerticallyResizable = true
+        textView.isHorizontallyResizable = false
+        textView.isEditable = false
+        textView.isSelectable = true
+        textView.autoresizingMask = [.width]
+        textView.isRichText = true
+        textView.textContainerInset = NSSize(width: 24, height: 24)
+        textView.drawsBackground = true
+        textView.linkTextAttributes = [
+            .foregroundColor: NSColor.linkColor,
+            .cursor: NSCursor.pointingHand
+        ]
+
+        scrollView.documentView = textView
+        self.view = container
     }
 
     // MARK: - QLPreviewingController
 
     func preparePreviewOfFile(at url: URL, completionHandler handler: @escaping (Error?) -> Void) {
-        let fullHTML: String
         do {
-            let markdown = try String(contentsOf: url, encoding: .utf8)
-            let html = MarkdownParser.toHTML(markdown)
-            fullHTML = HTMLTemplate.wrap(html)
-        } catch {
-            if let data = try? Data(contentsOf: url),
-               let decoded = String(data: data, encoding: .isoLatin1) {
-                let html = MarkdownParser.toHTML(decoded)
-                fullHTML = HTMLTemplate.wrap(html)
-            } else {
-                handler(error)
+            let data = try Data(contentsOf: url, options: [.uncached])
+            let encoding = data.stringEncoding ?? .utf8
+
+            guard let markdownString = String(data: data, encoding: encoding) else {
+                handler(NSError(domain: "easyMDView", code: 1,
+                                userInfo: [NSLocalizedDescriptionKey: "Cannot decode file"]))
                 return
             }
-        }
 
-        webView.loadHTMLString(fullHTML, baseURL: url.deletingLastPathComponent())
-        handler(nil)
+            let html = MarkdownParser.toHTML(markdownString)
+            let fullHTML = HTMLTemplate.wrap(html)
+
+            guard let htmlData = fullHTML.data(using: .utf8),
+                  let attributedString = NSAttributedString(
+                      html: htmlData,
+                      baseURL: url.deletingLastPathComponent(),
+                      documentAttributes: nil
+                  ) else {
+                // Fallback: show raw markdown as plain text
+                textView.string = markdownString
+                self.view.display()
+                handler(nil)
+                return
+            }
+
+            if let ts = textView.textStorage {
+                ts.beginEditing()
+                ts.setAttributedString(attributedString)
+                ts.endEditing()
+            }
+
+            self.view.display()
+            handler(nil)
+        } catch {
+            handler(error)
+        }
     }
 }
 
-// MARK: - WKNavigationDelegate
+// MARK: - Data encoding detection
 
-extension PreviewViewController: WKNavigationDelegate {
-    func webView(
-        _ webView: WKWebView,
-        decidePolicyFor navigationAction: WKNavigationAction,
-        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-    ) {
-        if navigationAction.navigationType == .linkActivated {
-            if let url = navigationAction.request.url {
-                NSWorkspace.shared.open(url)
-            }
-            decisionHandler(.cancel)
-        } else {
-            decisionHandler(.allow)
+extension Data {
+    /// Attempt to detect string encoding from BOM or content.
+    var stringEncoding: String.Encoding? {
+        var nsString: NSString?
+        guard !isEmpty else { return .utf8 }
+        NSString.stringEncoding(
+            for: self,
+            encodingOptions: nil,
+            convertedString: &nsString,
+            usedLossyConversion: nil
+        )
+        // If NSString could detect it, use that; otherwise nil to let caller decide
+        if nsString != nil {
+            return .utf8
         }
+        return nil
     }
 }
