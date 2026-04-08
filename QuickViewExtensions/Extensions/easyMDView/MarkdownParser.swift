@@ -18,6 +18,9 @@ enum MarkdownParser {
 private struct HTMLConverter: MarkupVisitor {
     typealias Result = String
 
+    /// Track whether we've emitted any block yet (to add spacers before headings)
+    private var isFirstBlock = true
+
     // MARK: - Document
 
     mutating func defaultVisit(_ markup: any Markup) -> String {
@@ -25,7 +28,8 @@ private struct HTMLConverter: MarkupVisitor {
     }
 
     mutating func visitDocument(_ document: Document) -> String {
-        document.children.map { visit($0) }.joined(separator: "\n")
+        isFirstBlock = true
+        return document.children.map { visit($0) }.joined(separator: "\n")
     }
 
     // MARK: - Block Elements
@@ -38,7 +42,15 @@ private struct HTMLConverter: MarkupVisitor {
             .lowercased()
             .replacingOccurrences(of: " ", with: "-")
             .replacingOccurrences(of: "[^a-z0-9\\-]", with: "", options: .regularExpression)
-        return "<h\(level) id=\"\(id)\">\(content)</h\(level)>"
+
+        // Add vertical space before headings (NSAttributedString ignores CSS margins)
+        var spacer = ""
+        if !isFirstBlock {
+            let spacePx = level <= 2 ? 18 : 12
+            spacer = "<p style=\"font-size:\(spacePx)px; line-height:\(spacePx)px;\">&nbsp;</p>"
+        }
+        isFirstBlock = false
+        return "\(spacer)<h\(level) id=\"\(id)\">\(content)</h\(level)>"
     }
 
     mutating func visitParagraph(_ paragraph: Paragraph) -> String {

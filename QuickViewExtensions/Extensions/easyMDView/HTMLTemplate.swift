@@ -1,18 +1,21 @@
-import Foundation
+import Cocoa
 
 /// Wraps HTML content in a complete document with styling.
+/// Detects system appearance and injects the appropriate CSS.
 enum HTMLTemplate {
 
     /// Wrap an HTML body fragment in a full HTML document with CSS.
-    static func wrap(_ bodyHTML: String) -> String {
-        """
+    static func wrap(_ bodyHTML: String, darkMode: Bool? = nil) -> String {
+        let isDark = darkMode ?? Self.systemIsDarkMode()
+        let colors = isDark ? Colors.dark : Colors.light
+
+        return """
         <!DOCTYPE html>
         <html>
         <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-        \(css)
+        \(css(with: colors))
         </style>
         </head>
         <body>
@@ -24,215 +27,206 @@ enum HTMLTemplate {
         """
     }
 
-    private static let css = """
-    :root {
-        color-scheme: light dark;
+    // MARK: - Appearance Detection
+
+    private static func systemIsDarkMode() -> Bool {
+        let appearance = NSApp?.effectiveAppearance
+            ?? NSAppearance.currentDrawing()
+        return appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
     }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+    // MARK: - Color Palette
+
+    private struct Colors {
+        let bg: String
+        let text: String
+        let textSecondary: String
+        let textTertiary: String
+        let link: String
+        let border: String
+        let codeBg: String
+        let tableBgAlt: String
+        let tableHeaderBg: String
+        let blockquoteBorder: String
+        let blockquoteText: String
+
+        static let light = Colors(
+            bg: "#ffffff",
+            text: "#1d1d1f",
+            textSecondary: "#6e6e73",
+            textTertiary: "#86868b",
+            link: "#0066cc",
+            border: "#d2d2d7",
+            codeBg: "#f5f5f7",
+            tableBgAlt: "#f9f9fb",
+            tableHeaderBg: "#f0f0f5",
+            blockquoteBorder: "#0066cc",
+            blockquoteText: "#6e6e73"
+        )
+
+        static let dark = Colors(
+            bg: "#1e1e1e",
+            text: "#e5e5e7",
+            textSecondary: "#a1a1a6",
+            textTertiary: "#86868b",
+            link: "#4db8ff",
+            border: "#3a3a3c",
+            codeBg: "#2c2c2e",
+            tableBgAlt: "#252528",
+            tableHeaderBg: "#2c2c2e",
+            blockquoteBorder: "#4db8ff",
+            blockquoteText: "#a1a1a6"
+        )
     }
 
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 15px;
-        line-height: 1.7;
-        color: #1d1d1f;
-        background: #ffffff;
-        padding: 24px 32px;
-        -webkit-font-smoothing: antialiased;
-    }
+    // MARK: - CSS
 
-    @media (prefers-color-scheme: dark) {
+    private static func css(with c: Colors) -> String {
+        """
         body {
-            color: #f5f5f7;
-            background: #1d1d1f;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.7;
+            color: \(c.text);
+            background-color: \(c.bg);
         }
-    }
 
-    article {
-        max-width: 780px;
-        margin: 0 auto;
-    }
+        article {
+            max-width: 780px;
+        }
 
-    /* Headings */
-    h1, h2, h3, h4, h5, h6 {
-        margin-top: 1.4em;
-        margin-bottom: 0.6em;
-        font-weight: 600;
-        line-height: 1.3;
-    }
+        /* ── Headings ────────────────────────────── */
 
-    h1 { font-size: 2em; border-bottom: 1px solid #d2d2d7; padding-bottom: 0.3em; }
-    h2 { font-size: 1.5em; border-bottom: 1px solid #d2d2d7; padding-bottom: 0.2em; }
-    h3 { font-size: 1.25em; }
-    h4 { font-size: 1.1em; }
-    h5 { font-size: 1em; }
-    h6 { font-size: 0.9em; color: #86868b; }
+        h1, h2, h3, h4, h5, h6 {
+            color: \(c.text);
+            margin-top: 2em;
+            margin-bottom: 0.7em;
+            font-weight: 700;
+            line-height: 1.3;
+        }
 
-    @media (prefers-color-scheme: dark) {
-        h1, h2 { border-bottom-color: #424245; }
-        h6 { color: #a1a1a6; }
-    }
+        h1 {
+            font-size: 1.9em;
+            margin-top: 2.2em;
+            border-bottom: 2px solid \(c.border);
+            padding-bottom: 0.35em;
+        }
 
-    h1:first-child, h2:first-child, h3:first-child {
-        margin-top: 0;
-    }
+        h2 {
+            font-size: 1.45em;
+            margin-top: 2em;
+            border-bottom: 1px solid \(c.border);
+            padding-bottom: 0.25em;
+        }
 
-    /* Paragraphs */
-    p {
-        margin-bottom: 1em;
-    }
+        h3 { font-size: 1.2em; margin-top: 1.8em; }
+        h4 { font-size: 1.05em; margin-top: 1.6em; }
+        h5 { font-size: 1em; color: \(c.textSecondary); }
+        h6 { font-size: 0.9em; color: \(c.textTertiary); }
 
-    /* Links */
-    a {
-        color: #0066cc;
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
+        /* ── Paragraphs ──────────────────────────── */
 
-    @media (prefers-color-scheme: dark) {
-        a { color: #2997ff; }
-    }
+        p {
+            margin-top: 0;
+            margin-bottom: 0.9em;
+        }
 
-    /* Inline code */
-    code {
-        font-family: "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 0.88em;
-        background: #f5f5f7;
-        padding: 0.15em 0.4em;
-        border-radius: 4px;
-    }
+        /* ── Links ───────────────────────────────── */
 
-    @media (prefers-color-scheme: dark) {
-        code { background: #2c2c2e; }
-    }
+        a {
+            color: \(c.link);
+        }
 
-    /* Code blocks */
-    pre {
-        margin-bottom: 1em;
-        padding: 16px;
-        background: #f5f5f7;
-        border-radius: 8px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+        /* ── Code ────────────────────────────────── */
 
-    pre code {
-        background: none;
-        padding: 0;
-        font-size: 0.85em;
-        line-height: 1.5;
-    }
+        code {
+            font-family: "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.88em;
+            background-color: \(c.codeBg);
+            padding: 2px 5px;
+        }
 
-    @media (prefers-color-scheme: dark) {
-        pre { background: #2c2c2e; }
-    }
+        pre {
+            background-color: \(c.codeBg);
+            padding: 14px;
+            margin-top: 0.5em;
+            margin-bottom: 1.4em;
+            font-family: "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.55;
+            color: \(c.text);
+            border: 1px solid \(c.border);
+        }
 
-    /* Blockquotes */
-    blockquote {
-        margin-bottom: 1em;
-        padding: 0.5em 1em;
-        border-left: 4px solid #d2d2d7;
-        color: #6e6e73;
-    }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            font-size: inherit;
+        }
 
-    blockquote p:last-child {
-        margin-bottom: 0;
-    }
+        /* ── Blockquotes ─────────────────────────── */
 
-    @media (prefers-color-scheme: dark) {
         blockquote {
-            border-left-color: #424245;
-            color: #a1a1a6;
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+            margin-bottom: 1em;
+            padding-left: 16px;
+            border-left: 4px solid \(c.blockquoteBorder);
+            color: \(c.blockquoteText);
         }
+
+        /* ── Lists ───────────────────────────────── */
+
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 1.8em;
+        }
+
+        li {
+            margin-bottom: 0.25em;
+        }
+
+        /* ── Tables ──────────────────────────────── */
+
+        table {
+            border-collapse: collapse;
+            margin-top: 0.5em;
+            margin-bottom: 1.4em;
+            font-size: 0.92em;
+        }
+
+        th, td {
+            padding: 7px 12px;
+            border: 1px solid \(c.border);
+            text-align: left;
+        }
+
+        th {
+            background-color: \(c.tableHeaderBg);
+            font-weight: 600;
+            color: \(c.text);
+        }
+
+        /* ── Horizontal Rule ─────────────────────── */
+
+        hr {
+            border: none;
+            border-top: 1px solid \(c.border);
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
+        }
+
+        /* ── Images ──────────────────────────────── */
+
+        img {
+            max-width: 100%;
+        }
+
+        /* ── Emphasis ────────────────────────────── */
+
+        strong { font-weight: 700; }
+        del { color: \(c.textTertiary); }
+        """
     }
-
-    /* Lists */
-    ul, ol {
-        margin-bottom: 1em;
-        padding-left: 2em;
-    }
-
-    li {
-        margin-bottom: 0.3em;
-    }
-
-    li > ul, li > ol {
-        margin-bottom: 0;
-        margin-top: 0.3em;
-    }
-
-    /* Task list */
-    .task-list-item {
-        list-style: none;
-        margin-left: -1.5em;
-    }
-
-    .task-list-item input[type="checkbox"] {
-        margin-right: 0.4em;
-        vertical-align: middle;
-    }
-
-    /* Tables */
-    table {
-        width: 100%;
-        margin-bottom: 1em;
-        border-collapse: collapse;
-        font-size: 0.92em;
-    }
-
-    th, td {
-        padding: 8px 12px;
-        border: 1px solid #d2d2d7;
-        text-align: left;
-    }
-
-    th {
-        background: #f5f5f7;
-        font-weight: 600;
-    }
-
-    tbody tr:nth-child(even) {
-        background: #fafafa;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        th, td { border-color: #424245; }
-        th { background: #2c2c2e; }
-        tbody tr:nth-child(even) { background: #242426; }
-    }
-
-    /* Horizontal rule */
-    hr {
-        margin: 1.5em 0;
-        border: none;
-        border-top: 1px solid #d2d2d7;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        hr { border-top-color: #424245; }
-    }
-
-    /* Images */
-    img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 4px;
-    }
-
-    /* Strong & Em */
-    strong { font-weight: 600; }
-
-    /* Strikethrough */
-    del { color: #86868b; }
-
-    @media (prefers-color-scheme: dark) {
-        del { color: #a1a1a6; }
-    }
-    """
 }

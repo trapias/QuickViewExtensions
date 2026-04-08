@@ -56,6 +56,10 @@ class PreviewViewController: NSViewController, QLPreviewingController {
     // MARK: - QLPreviewingController
 
     func preparePreviewOfFile(at url: URL, completionHandler handler: @escaping (Error?) -> Void) {
+        // Detect appearance
+        let isDark = isDarkMode()
+        applyAppearance(isDark: isDark)
+
         do {
             let data = try Data(contentsOf: url, options: [.uncached])
             let encoding = data.stringEncoding ?? .utf8
@@ -67,7 +71,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
             }
 
             let html = MarkdownParser.toHTML(markdownString)
-            let fullHTML = HTMLTemplate.wrap(html)
+            let fullHTML = HTMLTemplate.wrap(html, darkMode: isDark)
 
             guard let htmlData = fullHTML.data(using: .utf8),
                   let attributedString = NSAttributedString(
@@ -75,7 +79,6 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                       baseURL: url.deletingLastPathComponent(),
                       documentAttributes: nil
                   ) else {
-                // Fallback: show raw markdown as plain text
                 textView.string = markdownString
                 self.view.display()
                 handler(nil)
@@ -93,6 +96,23 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         } catch {
             handler(error)
         }
+    }
+
+    // MARK: - Appearance
+
+    private func isDarkMode() -> Bool {
+        let appearance = NSApp?.effectiveAppearance
+            ?? NSAppearance.currentDrawing()
+        return appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+    }
+
+    private func applyAppearance(isDark: Bool) {
+        let bgColor = isDark ? NSColor(red: 0.118, green: 0.118, blue: 0.118, alpha: 1) // #1e1e1e
+                             : NSColor.white
+        textView.backgroundColor = bgColor
+        scrollView.backgroundColor = bgColor
+        scrollView.scrollerKnobStyle = isDark ? .light : .dark
+        view.appearance = isDark ? NSAppearance(named: .darkAqua) : NSAppearance(named: .aqua)
     }
 }
 
