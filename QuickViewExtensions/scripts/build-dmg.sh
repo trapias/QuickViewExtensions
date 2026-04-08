@@ -37,6 +37,9 @@ echo "==> Found app at: ${APP_PATH}"
 # Copy .app to DMG staging
 cp -R "${APP_PATH}" "${DMG_DIR}/"
 
+# Copy README
+cp "${PROJECT_DIR}/scripts/README-DMG.md" "${DMG_DIR}/LEGGIMI.md"
+
 # Create a symlink to /Applications for drag-and-drop install
 ln -s /Applications "${DMG_DIR}/Applications"
 
