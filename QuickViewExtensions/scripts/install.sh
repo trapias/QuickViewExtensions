@@ -4,7 +4,7 @@ set -euo pipefail
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 APP_NAME="QuickViewExtensions"
 BUILD_DIR="${PROJECT_DIR}/build"
-INSTALL_DIR="$HOME/Applications"
+INSTALL_DIR="/Applications"
 
 echo "==> Generating Xcode project..."
 cd "${PROJECT_DIR}"
