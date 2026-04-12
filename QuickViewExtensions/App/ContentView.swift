@@ -2,9 +2,9 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 20) {
             Image(systemName: "eye.fill")
-                .font(.system(size: 48))
+                .font(.system(size: 44))
                 .foregroundStyle(Color.accentColor)
 
             Text("QuickViewExtensions")
@@ -18,27 +18,53 @@ struct ContentView: View {
             Divider()
                 .padding(.horizontal, 40)
 
-            VStack(alignment: .leading, spacing: 16) {
-                ExtensionRow(
-                    icon: "doc.richtext",
-                    name: "easyMDView",
-                    description: "Renders Markdown files as formatted HTML",
-                    fileTypes: ".md"
-                )
-                ExtensionRow(
-                    icon: "curlybraces",
-                    name: "easyJSONView",
-                    description: "Renders JSON files with syntax highlighting and collapsible tree",
-                    fileTypes: ".json"
-                )
-                ExtensionRow(
-                    icon: "chevron.left.forwardslash.chevron.right",
-                    name: "easyCodeView",
-                    description: "Syntax highlighting for source code files",
-                    fileTypes: ".swift .py .js .ts ..."
-                )
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    ExtensionRow(
+                        icon: "doc.richtext",
+                        name: "easyMDView",
+                        description: "Markdown files with Mermaid diagrams",
+                        fileTypes: ".md"
+                    )
+                    ExtensionRow(
+                        icon: "curlybraces",
+                        name: "easyJSONView",
+                        description: "JSON with collapsible tree and syntax highlighting",
+                        fileTypes: ".json"
+                    )
+                    ExtensionRow(
+                        icon: "chevron.left.forwardslash.chevron.right",
+                        name: "easyCodeView",
+                        description: "Source code with syntax highlighting (40+ languages)",
+                        fileTypes: ".swift .py .js .cs ..."
+                    )
+                    ExtensionRow(
+                        icon: "text.alignleft",
+                        name: "easyYAMLView",
+                        description: "YAML files with syntax highlighting",
+                        fileTypes: ".yaml .yml"
+                    )
+                    ExtensionRow(
+                        icon: "lock.shield",
+                        name: "easyDotEnvView",
+                        description: "Environment files with masked secrets",
+                        fileTypes: ".env"
+                    )
+                    ExtensionRow(
+                        icon: "list.bullet.rectangle",
+                        name: "easyLogView",
+                        description: "Log files with color-coded severity levels",
+                        fileTypes: ".log"
+                    )
+                    ExtensionRow(
+                        icon: "cylinder",
+                        name: "easySQLView",
+                        description: "SQL scripts with syntax highlighting",
+                        fileTypes: ".sql"
+                    )
+                }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 20)
 
             Divider()
                 .padding(.horizontal, 40)
@@ -51,13 +77,22 @@ struct ContentView: View {
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
 
-                Text("Extensions activate automatically after first launch.")
+                HStack(spacing: 4) {
+                    Text("Manage extensions in")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                    Button("System Settings") {
+                        NSWorkspace.shared.open(
+                            URL(string: "x-apple.systempreferences:com.apple.LoginItems-Settings.extension")!
+                        )
+                    }
                     .font(.caption)
-                    .foregroundStyle(.tertiary)
+                    .buttonStyle(.link)
+                }
             }
         }
-        .padding(40)
-        .frame(width: 480, height: 480)
+        .padding(32)
+        .frame(width: 500, height: 620)
     }
 }
 

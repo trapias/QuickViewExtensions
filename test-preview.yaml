@@ -1,0 +1,42 @@
+# Test easyYAMLView
+name: QuickViewExtensions
+version: "1.0.0"
+description: Quick Look preview extensions for macOS
+
+extensions:
+  - name: easyMDView
+    type: markdown
+    fileTypes: [".md"]
+    active: true
+
+  - name: easyJSONView
+    type: json
+    fileTypes: [".json"]
+    active: true
+
+  - name: easyCodeView
+    type: source-code
+    fileTypes: [".swift", ".py", ".js", ".ts", ".cs", ".go", ".rs"]
+    active: true
+    features:
+      syntaxHighlighting: true
+      lineNumbers: true
+      languageDetection: true
+
+settings:
+  darkMode: auto
+  maxFileSize: 5242880
+  deployment:
+    target: macOS 15.0
+    signing: automatic
+    team: ETE2S82AG6
+
+build:
+  tool: xcodegen
+  configuration:
+    debug:
+      optimizationLevel: none
+      swiftFlags: ["-DDEBUG"]
+    release:
+      optimizationLevel: wholeModule
+      stripSymbols: true

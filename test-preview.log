@@ -1,0 +1,31 @@
+2026-04-12T10:00:01.123Z INFO  [main] Application starting up
+2026-04-12T10:00:01.456Z INFO  [main] Loading configuration from /etc/app/config.yaml
+2026-04-12T10:00:01.789Z DEBUG [config] Found 12 environment variables
+2026-04-12T10:00:02.001Z INFO  [db] Connecting to PostgreSQL at localhost:5432
+2026-04-12T10:00:02.345Z DEBUG [db] Connection pool initialized (min=5, max=20)
+2026-04-12T10:00:02.567Z INFO  [db] Database connection established
+2026-04-12T10:00:03.001Z INFO  [http] Starting HTTP server on :8080
+2026-04-12T10:00:03.123Z INFO  [http] Registered 24 routes
+2026-04-12T10:00:03.456Z INFO  [main] Application ready - accepting requests
+
+2026-04-12T10:01:15.001Z INFO  [http] GET /api/users 200 12ms
+2026-04-12T10:01:15.234Z DEBUG [cache] Cache hit for key: users:list
+2026-04-12T10:01:22.001Z INFO  [http] POST /api/users 201 45ms
+2026-04-12T10:01:22.567Z WARN  [validation] Request body missing optional field: phone
+2026-04-12T10:01:30.001Z INFO  [http] GET /api/users/42 200 8ms
+
+2026-04-12T10:05:00.001Z ERROR [http] GET /api/reports 500 2345ms - Internal Server Error
+2026-04-12T10:05:00.002Z ERROR [db] Query timeout after 2000ms: SELECT * FROM reports WHERE created_at > $1
+2026-04-12T10:05:00.003Z ERROR [db] Stack trace: at QueryRunner.execute (db/runner.go:142)
+2026-04-12T10:05:01.001Z WARN  [circuit-breaker] Circuit opened for service: reporting-service (failures: 5/5)
+
+2026-04-12T10:10:00.001Z INFO  [scheduler] Running scheduled task: cleanup-temp-files
+2026-04-12T10:10:05.001Z DEBUG [scheduler] Deleted 23 temporary files (45.2 MB freed)
+2026-04-12T10:10:05.002Z INFO  [scheduler] Task completed in 5001ms
+
+2026-04-12T10:15:00.001Z WARN  [memory] Heap usage at 78% (1.56 GB / 2.00 GB)
+2026-04-12T10:15:00.002Z WARN  [gc] GC pause: 45ms (target: 10ms)
+2026-04-12T10:20:00.001Z FATAL [db] Connection pool exhausted - all 20 connections in use
+2026-04-12T10:20:00.002Z ERROR [http] Service unavailable - returning 503 to all requests
+2026-04-12T10:20:05.001Z INFO  [db] Connection recovered (available: 8/20)
+2026-04-12T10:20:05.002Z INFO  [http] Service restored - accepting requests

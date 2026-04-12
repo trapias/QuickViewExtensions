@@ -51,6 +51,14 @@ targets:
         embed: true
       - target: easyCodeView
         embed: true
+      - target: easyYAMLView
+        embed: true
+      - target: easyDotEnvView
+        embed: true
+      - target: easyLogView
+        embed: true
+      - target: easySQLView
+        embed: true
 
   easyMDView:
     type: app-extension
@@ -97,5 +105,65 @@ targets:
         PRODUCT_NAME: easyCodeView
         INFOPLIST_FILE: Extensions/easyCodeView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easyCodeView/easyCodeView.entitlements
+        ENABLE_APP_SANDBOX: true
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+
+  easyYAMLView:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Extensions/easyYAMLView
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyYAMLView
+        PRODUCT_NAME: easyYAMLView
+        INFOPLIST_FILE: Extensions/easyYAMLView/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/easyYAMLView/easyYAMLView.entitlements
+        ENABLE_APP_SANDBOX: true
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+
+  easyDotEnvView:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Extensions/easyDotEnvView
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyDotEnvView
+        PRODUCT_NAME: easyDotEnvView
+        INFOPLIST_FILE: Extensions/easyDotEnvView/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/easyDotEnvView/easyDotEnvView.entitlements
+        ENABLE_APP_SANDBOX: true
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+
+  easyLogView:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Extensions/easyLogView
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyLogView
+        PRODUCT_NAME: easyLogView
+        INFOPLIST_FILE: Extensions/easyLogView/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/easyLogView/easyLogView.entitlements
+        ENABLE_APP_SANDBOX: true
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+
+  easySQLView:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Extensions/easySQLView
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easySQLView
+        PRODUCT_NAME: easySQLView
+        INFOPLIST_FILE: Extensions/easySQLView/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/easySQLView/easySQLView.entitlements
         ENABLE_APP_SANDBOX: true
         SWIFT_EMIT_LOC_STRINGS: "YES"
