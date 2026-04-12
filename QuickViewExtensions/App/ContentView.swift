@@ -37,6 +37,12 @@ struct ContentView: View {
                     description: "Renders CSV/TSV files as formatted tables",
                     fileTypes: ".csv .tsv"
                 )
+                ExtensionRow(
+                    icon: "square.on.square.badge.person.crop",
+                    name: "easySVGView",
+                    description: "Renders SVG files with metadata and checkerboard background",
+                    fileTypes: ".svg"
+                )
             }
             .padding(.horizontal, 20)
 

@@ -51,6 +51,8 @@ targets:
         embed: true
       - target: easyCSVView
         embed: true
+      - target: easySVGView
+        embed: true
 
   easyMDView:
     type: app-extension
@@ -97,5 +99,20 @@ targets:
         PRODUCT_NAME: easyCSVView
         INFOPLIST_FILE: Extensions/easyCSVView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easyCSVView/easyCSVView.entitlements
+        ENABLE_APP_SANDBOX: true
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+
+  easySVGView:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Extensions/easySVGView
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easySVGView
+        PRODUCT_NAME: easySVGView
+        INFOPLIST_FILE: Extensions/easySVGView/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/easySVGView/easySVGView.entitlements
         ENABLE_APP_SANDBOX: true
         SWIFT_EMIT_LOC_STRINGS: "YES"
