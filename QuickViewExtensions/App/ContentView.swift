@@ -36,7 +36,7 @@ struct ContentView: View {
                         icon: "chevron.left.forwardslash.chevron.right",
                         name: "easyCodeView",
                         description: "Source code with syntax highlighting (40+ languages)",
-                        fileTypes: ".swift .py .js .cs ..."
+                        fileTypes: ".swift .py .js .cs .sql ..."
                     )
                     ExtensionRow(
                         icon: "text.alignleft",
@@ -55,12 +55,6 @@ struct ContentView: View {
                         name: "easyLogView",
                         description: "Log files with color-coded severity levels",
                         fileTypes: ".log"
-                    )
-                    ExtensionRow(
-                        icon: "cylinder",
-                        name: "easySQLView",
-                        description: "SQL scripts with syntax highlighting",
-                        fileTypes: ".sql"
                     )
                 }
                 .padding(.horizontal, 20)

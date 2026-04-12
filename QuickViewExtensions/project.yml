@@ -57,8 +57,6 @@ targets:
         embed: true
       - target: easyLogView
         embed: true
-      - target: easySQLView
-        embed: true
 
   easyMDView:
     type: app-extension
@@ -153,17 +151,3 @@ targets:
         ENABLE_APP_SANDBOX: true
         SWIFT_EMIT_LOC_STRINGS: "YES"
 
-  easySQLView:
-    type: app-extension
-    platform: macOS
-    sources:
-      - path: Extensions/easySQLView
-      - path: Shared
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView.easySQLView
-        PRODUCT_NAME: easySQLView
-        INFOPLIST_FILE: Extensions/easySQLView/Info.plist
-        CODE_SIGN_ENTITLEMENTS: Extensions/easySQLView/easySQLView.entitlements
-        ENABLE_APP_SANDBOX: true
-        SWIFT_EMIT_LOC_STRINGS: "YES"

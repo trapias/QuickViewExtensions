@@ -108,6 +108,7 @@ enum LanguageMap {
         "fsproj": "xml",
         "vbproj": "xml",
         "sln": "plaintext",
+        "sql": "sql",
         "v": "verilog",
         "vhdl": "vhdl",
         "asm": "x86asm",
@@ -161,5 +162,6 @@ enum LanguageMap {
         "fsproj": "F# Project",
         "vbproj": "VB Project",
         "sln": "Solution",
+        "sql": "SQL",
     ]
 }
