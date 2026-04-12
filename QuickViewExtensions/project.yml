@@ -1,6 +1,6 @@
 name: QuickViewExtensions
 options:
-  bundleIdPrefix: com.albertopasca
+  bundleIdPrefix: it.trapias
   deploymentTarget:
     macOS: "15.0"
   xcodeVersion: "16.0"
@@ -39,7 +39,7 @@ targets:
       - path: App
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions
+        PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView
         PRODUCT_NAME: QuickViewExtensions
         INFOPLIST_FILE: App/Info.plist
         CODE_SIGN_ENTITLEMENTS: App/QuickViewExtensions.entitlements
@@ -68,7 +68,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyMDView
+        PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView.easyMDView
         PRODUCT_NAME: easyMDView
         INFOPLIST_FILE: Extensions/easyMDView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easyMDView/easyMDView.entitlements
@@ -86,7 +86,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyJSONView
+        PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView.easyJSONView
         PRODUCT_NAME: easyJSONView
         INFOPLIST_FILE: Extensions/easyJSONView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easyJSONView/easyJSONView.entitlements
@@ -101,7 +101,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyCodeView
+        PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView.easyCodeView
         PRODUCT_NAME: easyCodeView
         INFOPLIST_FILE: Extensions/easyCodeView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easyCodeView/easyCodeView.entitlements
@@ -116,7 +116,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyYAMLView
+        PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView.easyYAMLView
         PRODUCT_NAME: easyYAMLView
         INFOPLIST_FILE: Extensions/easyYAMLView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easyYAMLView/easyYAMLView.entitlements
@@ -131,7 +131,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyDotEnvView
+        PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView.easyDotEnvView
         PRODUCT_NAME: easyDotEnvView
         INFOPLIST_FILE: Extensions/easyDotEnvView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easyDotEnvView/easyDotEnvView.entitlements
@@ -146,7 +146,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyLogView
+        PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView.easyLogView
         PRODUCT_NAME: easyLogView
         INFOPLIST_FILE: Extensions/easyLogView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easyLogView/easyLogView.entitlements
@@ -161,7 +161,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easySQLView
+        PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView.easySQLView
         PRODUCT_NAME: easySQLView
         INFOPLIST_FILE: Extensions/easySQLView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easySQLView/easySQLView.entitlements
