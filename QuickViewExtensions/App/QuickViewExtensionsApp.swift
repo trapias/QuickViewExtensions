@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct QuickViewExtensionsApp: App {
+struct easyQuickViewApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {

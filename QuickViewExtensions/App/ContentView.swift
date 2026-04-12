@@ -111,31 +111,35 @@ struct ExtensionsTab: View {
 
 struct AboutTab: View {
     var body: some View {
-        VStack(spacing: 24) {
-            Spacer()
+        ScrollView {
+            VStack(spacing: 20) {
+                Spacer(minLength: 8)
 
-            Image("AppIcon")
-                .resizable()
-                .frame(width: 96, height: 96)
-                .cornerRadius(20)
+                if let appIcon = NSImage(named: "AppIcon") {
+                    Image(nsImage: appIcon)
+                        .resizable()
+                        .frame(width: 96, height: 96)
+                        .cornerRadius(20)
+                }
 
-            VStack(spacing: 4) {
-                Text("easyQuickView")
-                    .font(.title2.weight(.semibold))
+                VStack(spacing: 4) {
+                    Text("easyQuickView")
+                        .font(.title2.weight(.semibold))
 
-                Text("Version 1.0.0")
-                    .font(.caption)
+                    Text("Version 1.0.0")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Text("Quick Look preview extensions for Markdown, JSON, source code, YAML, .env, and log files.\n\nSelect any file in Finder and press Space to see a beautifully formatted preview with syntax highlighting and dark mode support.")
+                    .font(.body)
                     .foregroundStyle(.secondary)
-            }
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 24)
 
-            Text("Quick Look preview extensions for Markdown, JSON, source code, YAML, .env, and log files.\n\nSelect any file in Finder and press Space to see a beautifully formatted preview with syntax highlighting and dark mode support.")
-                .font(.body)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 24)
-
-            Divider()
-                .padding(.horizontal, 60)
+                Divider()
+                    .padding(.horizontal, 60)
 
             // Links
             VStack(spacing: 12) {
@@ -165,13 +169,14 @@ struct AboutTab: View {
             }
             .padding(.horizontal, 40)
 
-            Spacer()
+                Spacer(minLength: 8)
 
-            Text("Made with care by trapias")
-                .font(.caption2)
-                .foregroundStyle(.quaternary)
+                Text("Made with care by trapias")
+                    .font(.caption2)
+                    .foregroundStyle(.quaternary)
+            }
+            .padding(24)
         }
-        .padding(24)
     }
 }
 

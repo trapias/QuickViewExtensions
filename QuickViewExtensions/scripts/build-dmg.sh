@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Build configuration
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-PROJECT_NAME="QuickViewExtensions"
+PROJECT_NAME="easyQuickView"
 APP_NAME="easyQuickView"
 BUILD_DIR="${PROJECT_DIR}/build"
 DMG_DIR="${BUILD_DIR}/dmg"

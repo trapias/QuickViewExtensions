@@ -1,4 +1,4 @@
-name: QuickViewExtensions
+name: easyQuickView
 options:
   bundleIdPrefix: it.trapias
   deploymentTarget:
@@ -20,10 +20,10 @@ packages:
     from: "0.5.0"
 
 schemes:
-  QuickViewExtensions:
+  easyQuickView:
     build:
       targets:
-        QuickViewExtensions: all
+        easyQuickView: all
     run:
       config: Debug
     profile:
@@ -32,7 +32,7 @@ schemes:
       config: Release
 
 targets:
-  QuickViewExtensions:
+  easyQuickView:
     type: application
     platform: macOS
     sources:
@@ -42,7 +42,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView
         PRODUCT_NAME: easyQuickView
         INFOPLIST_FILE: App/Info.plist
-        CODE_SIGN_ENTITLEMENTS: App/QuickViewExtensions.entitlements
+        CODE_SIGN_ENTITLEMENTS: App/easyQuickView.entitlements
         ENABLE_APP_SANDBOX: true
     dependencies:
       - target: easyMDView

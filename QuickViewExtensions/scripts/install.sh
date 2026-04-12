@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-PROJECT_NAME="QuickViewExtensions"
+PROJECT_NAME="easyQuickView"
 APP_NAME="easyQuickView"
 BUNDLE_ID="it.trapias.easyQuickView"
 BUILD_DIR="${PROJECT_DIR}/build"
