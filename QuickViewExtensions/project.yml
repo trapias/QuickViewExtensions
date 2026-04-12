@@ -49,6 +49,8 @@ targets:
         embed: true
       - target: easyJSONView
         embed: true
+      - target: easyCSVView
+        embed: true
 
   easyMDView:
     type: app-extension
@@ -80,5 +82,20 @@ targets:
         PRODUCT_NAME: easyJSONView
         INFOPLIST_FILE: Extensions/easyJSONView/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/easyJSONView/easyJSONView.entitlements
+        ENABLE_APP_SANDBOX: true
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+
+  easyCSVView:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Extensions/easyCSVView
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyCSVView
+        PRODUCT_NAME: easyCSVView
+        INFOPLIST_FILE: Extensions/easyCSVView/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/easyCSVView/easyCSVView.entitlements
         ENABLE_APP_SANDBOX: true
         SWIFT_EMIT_LOC_STRINGS: "YES"

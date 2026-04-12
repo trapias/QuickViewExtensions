@@ -31,6 +31,12 @@ struct ContentView: View {
                     description: "Renders JSON files with syntax highlighting and collapsible tree",
                     fileTypes: ".json"
                 )
+                ExtensionRow(
+                    icon: "tablecells",
+                    name: "easyCSVView",
+                    description: "Renders CSV/TSV files as formatted tables",
+                    fileTypes: ".csv .tsv"
+                )
             }
             .padding(.horizontal, 20)
 
