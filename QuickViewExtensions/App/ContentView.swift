@@ -27,7 +27,7 @@ struct ExtensionsTab: View {
                 .frame(width: 64, height: 64)
                 .cornerRadius(14)
 
-            Text("QuickViewExtensions")
+            Text("easyQuickView")
                 .font(.title2)
                 .fontWeight(.bold)
 
@@ -107,121 +107,6 @@ struct ExtensionsTab: View {
     }
 }
 
-// MARK: - Settings Tab
-
-struct SettingsTab: View {
-    private let bundleID = "it.trapias.easyQuickView"
-
-    private let extensions: [(id: String, name: String, icon: String, fileTypes: String)] = [
-        ("easyMDView", "Markdown Viewer", "doc.richtext", ".md"),
-        ("easyJSONView", "JSON Viewer", "curlybraces", ".json"),
-        ("easyCodeView", "Code Viewer", "chevron.left.forwardslash.chevron.right", ".swift .py .js .cs ..."),
-        ("easyYAMLView", "YAML Viewer", "text.alignleft", ".yaml .yml"),
-        ("easyDotEnvView", "DotEnv Viewer", "lock.shield", ".env"),
-        ("easyLogView", "Log Viewer", "list.bullet.rectangle", ".log"),
-    ]
-
-    @State private var statuses: [String: Bool] = [:]
-
-    var body: some View {
-        VStack(spacing: 20) {
-            VStack(spacing: 4) {
-                Image(systemName: "gearshape")
-                    .font(.system(size: 32))
-                    .foregroundStyle(.secondary)
-                Text("Extension Management")
-                    .font(.title3.weight(.semibold))
-                Text("Extensions are managed by macOS.\nUse System Settings to enable or disable them.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-
-            Divider()
-                .padding(.horizontal, 40)
-
-            ScrollView {
-                VStack(spacing: 8) {
-                    ForEach(extensions, id: \.id) { ext in
-                        HStack(spacing: 12) {
-                            Image(systemName: ext.icon)
-                                .font(.title3)
-                                .foregroundStyle(Color.accentColor)
-                                .frame(width: 28)
-
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text(ext.name)
-                                    .font(.system(size: 13, weight: .medium))
-                                Text(ext.fileTypes)
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                            }
-
-                            Spacer()
-
-                            if statuses[ext.id] == true {
-                                Label("Enabled", systemImage: "checkmark.circle.fill")
-                                    .font(.caption)
-                                    .foregroundStyle(.green)
-                            } else {
-                                Label("Disabled", systemImage: "xmark.circle")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 16)
-                    }
-                }
-                .padding(.horizontal, 20)
-            }
-
-            Divider()
-                .padding(.horizontal, 40)
-
-            VStack(spacing: 10) {
-                Button {
-                    NSWorkspace.shared.open(
-                        URL(string: "x-apple.systempreferences:com.apple.LoginItems-Settings.extension")!
-                    )
-                } label: {
-                    Label("Open System Settings", systemImage: "arrow.up.forward.app")
-                }
-                .controlSize(.regular)
-
-                Button("Refresh Status") {
-                    refreshStatuses()
-                }
-                .buttonStyle(.link)
-                .font(.caption)
-            }
-        }
-        .padding(24)
-        .onAppear {
-            refreshStatuses()
-        }
-    }
-
-    private func refreshStatuses() {
-        let task = Process()
-        task.executableURL = URL(fileURLWithPath: "/usr/bin/pluginkit")
-        task.arguments = ["-m", "-p", "com.apple.quicklook.preview", "-A", "-D"]
-        let pipe = Pipe()
-        task.standardOutput = pipe
-        try? task.run()
-        task.waitUntilExit()
-
-        let output = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
-        var newStatuses: [String: Bool] = [:]
-        for ext in extensions {
-            let fullID = "\(bundleID).\(ext.id)"
-            // + prefix means enabled in pluginkit output
-            newStatuses[ext.id] = output.contains("+    \(fullID)")
-        }
-        statuses = newStatuses
-    }
-}
-
 // MARK: - About Tab
 
 struct AboutTab: View {
@@ -235,7 +120,7 @@ struct AboutTab: View {
                 .cornerRadius(20)
 
             VStack(spacing: 4) {
-                Text("QuickViewExtensions")
+                Text("easyQuickView")
                     .font(.title2.weight(.semibold))
 
                 Text("Version 1.0.0")
@@ -243,8 +128,8 @@ struct AboutTab: View {
                     .foregroundStyle(.secondary)
             }
 
-            Text("Quick Look preview extensions for Markdown, JSON, source code, YAML, .env, and log files.")
-                .font(.callout)
+            Text("Quick Look preview extensions for Markdown, JSON, source code, YAML, .env, and log files.\n\nSelect any file in Finder and press Space to see a beautifully formatted preview with syntax highlighting and dark mode support.")
+                .font(.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)

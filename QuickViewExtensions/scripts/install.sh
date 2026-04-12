@@ -2,7 +2,8 @@
 set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-APP_NAME="QuickViewExtensions"
+PROJECT_NAME="QuickViewExtensions"
+APP_NAME="easyQuickView"
 BUNDLE_ID="it.trapias.easyQuickView"
 BUILD_DIR="${PROJECT_DIR}/build"
 INSTALL_DIR="/Applications"
@@ -13,8 +14,8 @@ xcodegen generate
 
 echo "==> Building Debug..."
 xcodebuild \
-    -project "${APP_NAME}.xcodeproj" \
-    -scheme "${APP_NAME}" \
+    -project "${PROJECT_NAME}.xcodeproj" \
+    -scheme "${PROJECT_NAME}" \
     -configuration Debug \
     -derivedDataPath "${BUILD_DIR}/DerivedData" \
     build 2>&1 | tail -5
@@ -51,4 +52,4 @@ done
 echo ""
 echo "==> Done! ${APP_NAME} installed at ${INSTALL_DIR}/${APP_NAME}.app"
 echo "    Press Space on any supported file in Finder to test."
-echo "    Supported: .md .json .swift .py .js .cs .yaml .env .log .sql"
+echo "    Supported: .md .json .swift .py .js .cs .yaml .env .log"

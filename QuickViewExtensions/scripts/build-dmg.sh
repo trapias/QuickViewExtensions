@@ -3,7 +3,8 @@ set -euo pipefail
 
 # Build configuration
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-APP_NAME="QuickViewExtensions"
+PROJECT_NAME="QuickViewExtensions"
+APP_NAME="easyQuickView"
 BUILD_DIR="${PROJECT_DIR}/build"
 DMG_DIR="${BUILD_DIR}/dmg"
 OUTPUT_DMG="${BUILD_DIR}/${APP_NAME}.dmg"
@@ -18,8 +19,8 @@ xcodegen generate
 
 echo "==> Building Release..."
 xcodebuild \
-    -project "${APP_NAME}.xcodeproj" \
-    -scheme "${APP_NAME}" \
+    -project "${PROJECT_NAME}.xcodeproj" \
+    -scheme "${PROJECT_NAME}" \
     -configuration Release \
     -derivedDataPath "${BUILD_DIR}/DerivedData" \
     build

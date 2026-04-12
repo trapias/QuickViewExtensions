@@ -40,7 +40,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: it.trapias.easyQuickView
-        PRODUCT_NAME: QuickViewExtensions
+        PRODUCT_NAME: easyQuickView
         INFOPLIST_FILE: App/Info.plist
         CODE_SIGN_ENTITLEMENTS: App/QuickViewExtensions.entitlements
         ENABLE_APP_SANDBOX: true
