@@ -16,16 +16,20 @@ class PreviewViewController: NSViewController, QLPreviewingController {
     func providePreview(for request: QLFilePreviewRequest, completionHandler handler: @escaping (QLPreviewReply?, Error?) -> Void) {
         do {
             let data = try Data(contentsOf: request.fileURL, options: [.uncached])
+            let encoding = data.stringEncoding ?? .utf8
 
-            guard let svgString = String(data: data, encoding: .utf8) else {
-                handler(nil, NSError(domain: "easySVGView", code: 1,
-                                     userInfo: [NSLocalizedDescriptionKey: "Cannot decode SVG file"]))
+            guard let content = String(data: data, encoding: encoding) else {
+                handler(nil, NSError(domain: "easyCodeView", code: 1,
+                                     userInfo: [NSLocalizedDescriptionKey: "Cannot decode file"]))
                 return
             }
 
+            let ext = request.fileURL.pathExtension.lowercased()
+            let language = LanguageMap.language(for: ext)
             let isDark = Self.isDarkMode()
-            let info = SVGAnalyzer.analyze(svgString, fileSize: data.count)
-            let html = HTMLTemplate.wrap(svgString, info: info, darkMode: isDark)
+            let lineCount = content.components(separatedBy: "\n").count
+            let html = HTMLTemplate.wrap(content, language: language, extension: ext,
+                                          lineCount: lineCount, fileSize: data.count, darkMode: isDark)
 
             let reply = QLPreviewReply(
                 dataOfContentType: UTType.html,
@@ -49,5 +53,22 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         let appearance = NSApp?.effectiveAppearance
             ?? NSAppearance.currentDrawing()
         return appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+    }
+}
+
+extension Data {
+    var stringEncoding: String.Encoding? {
+        var nsString: NSString?
+        guard !isEmpty else { return .utf8 }
+        NSString.stringEncoding(
+            for: self,
+            encodingOptions: nil,
+            convertedString: &nsString,
+            usedLossyConversion: nil
+        )
+        if nsString != nil {
+            return .utf8
+        }
+        return nil
     }
 }

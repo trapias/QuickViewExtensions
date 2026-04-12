@@ -32,16 +32,10 @@ struct ContentView: View {
                     fileTypes: ".json"
                 )
                 ExtensionRow(
-                    icon: "tablecells",
-                    name: "easyCSVView",
-                    description: "Renders CSV/TSV files as formatted tables",
-                    fileTypes: ".csv .tsv"
-                )
-                ExtensionRow(
-                    icon: "square.on.square.badge.person.crop",
-                    name: "easySVGView",
-                    description: "Renders SVG files with metadata and checkerboard background",
-                    fileTypes: ".svg"
+                    icon: "chevron.left.forwardslash.chevron.right",
+                    name: "easyCodeView",
+                    description: "Syntax highlighting for source code files",
+                    fileTypes: ".swift .py .js .ts ..."
                 )
             }
             .padding(.horizontal, 20)
