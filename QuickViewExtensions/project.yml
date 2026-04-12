@@ -47,6 +47,8 @@ targets:
     dependencies:
       - target: easyMDView
         embed: true
+      - target: easyJSONView
+        embed: true
 
   easyMDView:
     type: app-extension
@@ -65,3 +67,18 @@ targets:
     dependencies:
       - package: swift-markdown
         product: Markdown
+
+  easyJSONView:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Extensions/easyJSONView
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.albertopasca.QuickViewExtensions.easyJSONView
+        PRODUCT_NAME: easyJSONView
+        INFOPLIST_FILE: Extensions/easyJSONView/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/easyJSONView/easyJSONView.entitlements
+        ENABLE_APP_SANDBOX: true
+        SWIFT_EMIT_LOC_STRINGS: "YES"

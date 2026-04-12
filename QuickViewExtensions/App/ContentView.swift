@@ -25,6 +25,12 @@ struct ContentView: View {
                     description: "Renders Markdown files as formatted HTML",
                     fileTypes: ".md"
                 )
+                ExtensionRow(
+                    icon: "curlybraces",
+                    name: "easyJSONView",
+                    description: "Renders JSON files with syntax highlighting and collapsible tree",
+                    fileTypes: ".json"
+                )
             }
             .padding(.horizontal, 20)
 
@@ -45,7 +51,7 @@ struct ContentView: View {
             }
         }
         .padding(40)
-        .frame(width: 480, height: 420)
+        .frame(width: 480, height: 480)
     }
 }
 

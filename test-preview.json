@@ -1,0 +1,88 @@
+{
+  "title": "Test easyJSONView",
+  "description": "Questo file testa la preview JSON formattata con syntax highlighting e tree collassabile.",
+  "version": "1.0.0",
+
+  "formatting": {
+    "strings": "Le stringhe appaiono in verde",
+    "numbers": 42,
+    "floats": 3.14159,
+    "booleans_true": true,
+    "booleans_false": false,
+    "null_value": null,
+    "empty_string": "",
+    "unicode": "Emoji: 🚀 — Accenti: àèìòù — Symbols: €£¥"
+  },
+
+  "nested_objects": {
+    "level_1": {
+      "level_2": {
+        "level_3": {
+          "level_4": {
+            "deep": "Questo nodo è collassato di default (depth > 2)"
+          }
+        }
+      }
+    }
+  },
+
+  "arrays": {
+    "simple": [1, 2, 3, 4, 5],
+    "mixed_types": ["stringa", 123, true, false, null, 9.99],
+    "objects_array": [
+      {
+        "id": 1,
+        "name": "easyMDView",
+        "type": "markdown",
+        "active": true
+      },
+      {
+        "id": 2,
+        "name": "easyJSONView",
+        "type": "json",
+        "active": true
+      },
+      {
+        "id": 3,
+        "name": "easyYAMLView",
+        "type": "yaml",
+        "active": false
+      }
+    ],
+    "empty_array": []
+  },
+
+  "edge_cases": {
+    "empty_object": {},
+    "special_chars": "Caratteri speciali: <script>alert('xss')</script> & \"virgolette\"",
+    "long_string": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    "large_number": 9007199254740991,
+    "negative": -273.15,
+    "scientific": 6.022e23
+  },
+
+  "architecture": {
+    "flow": [
+      "File .json selezionato in Finder",
+      "Utente preme Spazio",
+      "macOS chiama Quick Look",
+      "easyJSONView.PreviewViewController riceve la richiesta",
+      "JSONRenderer.render() converte JSON → HTML tree",
+      "HTMLTemplate.wrap() aggiunge CSS e dark mode",
+      "QLPreviewReply restituisce HTML al sistema",
+      "Quick Look mostra la preview formattata"
+    ],
+    "components": {
+      "PreviewViewController": "Controller QL, entry point dell'extension",
+      "JSONRenderer": "Parser JSON → HTML con tree collassabile",
+      "HTMLTemplate": "Template HTML + CSS con syntax highlighting"
+    }
+  },
+
+  "metadata": {
+    "created": "2026-04-12",
+    "author": "alberto",
+    "license": "MIT",
+    "tags": ["quicklook", "json", "macos", "swift", "preview"]
+  }
+}
