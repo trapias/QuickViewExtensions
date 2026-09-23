@@ -27,6 +27,7 @@ Package.resolved
 # IDE
 .idea/
 .vscode/
+.claude/
 *.swp
 *.swo
 *~
