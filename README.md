@@ -19,10 +19,17 @@ All extensions support **light and dark mode** automatically.
 
 ### From DMG
 
-1. Open the `.dmg` file
-2. Drag **QuickViewExtensions** to the **Applications** folder
-3. Right-click the app and select **Open** (required for unsigned apps)
-4. The extensions activate automatically after first launch
+1. Open `easyQuickView.dmg` and drag **easyQuickView.app** into **Applications**.
+2. Open **easyQuickView** once to register its Quick Look extensions. If macOS blocks it, open **System Settings → Privacy & Security** and choose **Open Anyway** for easyQuickView, then confirm. This option appears after an attempted launch and is available for about an hour.
+3. Close the app and select a supported file in Finder, then press **Space**.
+
+The DMG is not notarized. Only if you trust the copy you received and macOS still blocks it, you can remove the quarantine attribute from the installed app and try opening it again:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/easyQuickView.app
+```
+
+Removing quarantine does not repair a damaged app or an invalid code signature. The current build uses an Apple Development signature; installation on another Mac must be tested before distributing the DMG more widely. A Developer ID signature and notarization are the supported distribution path.
 
 ### From source
 
@@ -37,14 +44,14 @@ Requires Xcode 16+ and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
 Extensions can be individually enabled or disabled in:
 
-**System Settings → General → Login Items & Extensions → QuickViewExtensions**
+**System Settings → General → Login Items & Extensions → easyQuickView**
 
 ## Build
 
 ```bash
 cd QuickViewExtensions
 xcodegen generate
-xcodebuild -project QuickViewExtensions.xcodeproj -scheme QuickViewExtensions -configuration Release build
+xcodebuild -project easyQuickView.xcodeproj -scheme easyQuickView -configuration Release build
 ```
 
 ### Create DMG
@@ -56,14 +63,14 @@ xcodebuild -project QuickViewExtensions.xcodeproj -scheme QuickViewExtensions -c
 ## Requirements
 
 - macOS 15.0 (Sequoia) or later
-- No Apple Developer account required (uses local signing)
+- The current project is configured for Apple Development signing; building requires a matching signing identity.
 
 ## Architecture
 
 The project uses a host app + app extension pattern:
 
 ```
-QuickViewExtensions.app
+easyQuickView.app
 └── Contents/PlugIns/
     ├── easyMDView.appex
     ├── easyJSONView.appex
