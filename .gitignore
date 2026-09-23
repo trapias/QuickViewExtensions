@@ -28,6 +28,7 @@ Package.resolved
 .idea/
 .vscode/
 .claude/
+easyMDView/
 *.swp
 *.swo
 *~
